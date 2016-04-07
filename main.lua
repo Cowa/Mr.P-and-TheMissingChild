@@ -1,4 +1,5 @@
 require "lib/maid64"
+
 local bump = require "lib/bump"
 local bump_debug = require "lib/bump_debug"
 
@@ -12,13 +13,12 @@ local World = require "world"
 
 local physicsWorld = nil
 
-local screenSize = 64
 local tileSize = 8
-
-love.keyboard.setKeyRepeat(true)
+local screenSize = 64
 
 function love.load()
   maid64.setup(screenSize)
+  love.keyboard.setKeyRepeat(true)
 
   physicsWorld = bump.newWorld(8)
 
@@ -36,6 +36,7 @@ end
 function love.update(dt)
   player:input(dt)
   player:update(dt)
+  world:update(dt)
   camera:setPosition(player.x, player.y)
 
   love.window.setTitle("FPS: " .. love.timer.getFPS())

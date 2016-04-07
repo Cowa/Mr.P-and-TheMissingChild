@@ -1,3 +1,4 @@
+local anim8 = require "lib/anim8"
 local class = require "lib/middleclass"
 
 local World = class("World")
@@ -11,6 +12,7 @@ function World:initialize(width, height, tileSize, register)
   self.lines = height / tileSize
 
   self.register = register
+  self.spritesheet = register:getOrLoad("asset/spritesheet.png")
 
   -- world is a grid, tile 8x8
   self.grid = {}
@@ -30,34 +32,92 @@ function World:generateTile(x, y)
   if x == 1 then
     return self:generateFirstRow(y)
   elseif y == 1 then
-    return { type = "rock-left", img = self.register:getOrLoad("asset/rock-left.png") }
+    return self:createTile("rock-left")
   elseif y == self.cols then
-    return { type = "rock-right", img = self.register:getOrLoad("asset/rock-right.png") }
+    return self:createTile("rock-right")
   else
-    return { type = "water-still", img = self.register:getOrLoad("asset/water-still.png") }
+    return self:createTile("water-still")
   end
 end
 
 function World:generateFirstRow(y)
   if y == 1 then
-    return { type = "rock-top-left", img = self.register:getOrLoad("asset/rock-top-left.png") }
+    return self:createTile("rock-top-left")
 
   elseif y == self.cols then
-    return { type = "rock-top-right", img = self.register:getOrLoad("asset/rock-top-right.png") }
+    return self:createTile("rock-top-right")
 
   else
-    return { type = "water-top", img = self.register:getOrLoad("asset/water-top.png") }
+    return self:createTile("water-top")
+  end
+end
+
+function World:createTile(name)
+  local tile = { type = name, isAnimated = false }
+
+  if name == "water-top" then
+    local g = anim8.newGrid(8, 8, 64, self.spritesheet:getHeight(), 0, 16)
+    local animation = anim8.newAnimation(g('1-8', 1), 0.5)
+
+    tile.animation = animation
+    tile.isAnimated = true
+
+    return tile
+  end
+
+  if name == "rock-top-left" then
+    tile.img = self.register:getOrLoad("asset/rock-top-left.png")
+
+    return tile
+
+  elseif name == "rock-top-right" then
+    tile.img = self.register:getOrLoad("asset/rock-top-right.png")
+
+    return tile
+
+  elseif name == "rock-right" then
+    tile.img = self.register:getOrLoad("asset/rock-right.png")
+
+    return tile
+
+  elseif name == "rock-left" then
+    tile.img = self.register:getOrLoad("asset/rock-left.png")
+
+    return tile
+
+  else
+    tile.img = self.register:getOrLoad("asset/water-still.png")
+
+    return tile
+  end
+
+end
+
+function World:update(dt)
+  for line = 1, self.lines do
+    for col = 1, self.cols do
+      local tile = self.grid[line][col]
+
+      if tile.isAnimated then
+        tile.animation:update(dt)
+      end
+    end
   end
 end
 
 function World:draw()
   for line = 1, self.lines do
     for col = 1, self.cols do
-      local img = self.grid[line][col].img
+      local tile = self.grid[line][col]
       local x = (line - 1) * self.tileSize
       local y = (col - 1) * self.tileSize
 
-      love.graphics.draw(img, y, x)
+      if tile.isAnimated then
+        tile.animation:draw(self.spritesheet, y, x)
+
+      else
+        love.graphics.draw(tile.img, y, x)
+      end
     end
   end
 end
