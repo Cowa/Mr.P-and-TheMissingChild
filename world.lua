@@ -25,11 +25,11 @@ end
 
 function World:generateTile(x, y)
   -- On first row
-  if y == 1 then
-    return self:generateFirstRow(x)
-  elseif x == 1 then
+  if x == 1 then
+    return self:generateFirstRow(y)
+  elseif y == 1 then
     return { type = "rock-left", img = loadImage("asset/rock-left.png") }
-  elseif x == self.cols then
+  elseif y == self.cols then
     return { type = "rock-right", img = loadImage("asset/rock-right.png") }
   else
     return { type = "water-still", img = loadImage("asset/water-still.png") }
@@ -55,7 +55,7 @@ function World:draw()
       local x = (line - 1) * self.tileSize
       local y = (col - 1) * self.tileSize
 
-      love.graphics.draw(img, x, y)
+      love.graphics.draw(img, y, x)
     end
   end
 end
