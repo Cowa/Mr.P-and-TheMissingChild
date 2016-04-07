@@ -6,48 +6,46 @@ local gamera = require "lib/gamera"
 local camera = nil
 
 local Player = require "player"
-local world = nil
+local World = require "world"
+
+local physicsWorld = nil
+
+local screenSize = 64
+local tileSize = 8
 
 love.keyboard.setKeyRepeat(true)
 
 function love.load()
-  maid64(64)
+  maid64(screenSize)
 
-  world = bump.newWorld(8)
+  physicsWorld = bump.newWorld(8)
 
-  camera = gamera.new(0, 0, 64, 2000)
-  camera:setWindow(0, 0, 64, 64)
+  camera = gamera.new(0, 0, screenSize, 200)
+  camera:setWindow(0, 0, screenSize, screenSize)
   camera:setPosition(0, 0)
 
-  player = Player:new(world)
-  world:add(player, player.x, player.y, player.w, player.h)
+  player = Player:new(physicsWorld)
+  physicsWorld:add(player, player.x, player.y, player.w, player.h)
+
+  world = World:new(screenSize, 500, tileSize)
+  world:generateWorld()
 end
 
 function love.update(dt)
+  player:input(dt)
   player:update(dt)
   camera:setPosition(player.x, player.y)
+
+  love.window.setTitle("FPS: " .. love.timer.getFPS())
 end
 
 function maid64_draw()
-  love.graphics.clear()
+  love.graphics.clear(255, 0, 255)
 
   camera:draw(function(l, t, w, h)
-    bump_debug.draw(world)
+    --bump_debug.draw(physicsWorld)
+    world:draw()
 
     player:draw()
   end)
-end
-
-function love.keypressed(key)
-  if key == "escape" then
-    love.event.quit()
-  elseif key == "right" then
-    player:move(player.x + 1, player.y)
-  elseif key == "left" then
-    player:move(player.x - 1, player.y)
-  elseif key == "up" then
-    player:move(player.x, player.y - 1)
-  elseif key == "down" then
-    player:move(player.x, player.y + 1)
-  end
 end

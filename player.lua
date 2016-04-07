@@ -11,19 +11,43 @@ function Player:initialize(world)
   self.w = 8
   self.h = 7
 
+  self.speed = 15
+
   self.world = world
 
   self.img = love.graphics.newImage("asset/pinguin.png")
+  self.img:setFilter("nearest","nearest")
 end
 
 function Player:update(dt)
-
+  self:move(self.x + self.vx * dt, self.y + self.vy * dt)
 end
 
 function Player:move(x, y)
   local actualX, actualY, cols, len = self.world:move(self, x, y)
   self.x = actualX
   self.y = actualY
+end
+
+function Player:input(dt)
+    if love.keyboard.isDown("escape") then
+      love.event.quit()
+    end
+
+    if love.keyboard.isDown("right") then
+      player:move(player.x + self.speed * dt, player.y)
+
+    elseif love.keyboard.isDown("left") then
+      player:move(player.x - self.speed * dt, player.y)
+
+    end
+
+    if love.keyboard.isDown("up") then
+      player:move(player.x, player.y - self.speed * dt)
+
+    elseif love.keyboard.isDown("down") then
+      player:move(player.x, player.y + self.speed * dt)
+    end
 end
 
 function Player:draw()
