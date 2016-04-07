@@ -2,7 +2,7 @@ local class = require "lib/middleclass"
 
 local Player = class("Player")
 
-function Player:initialize(world)
+function Player:initialize(world, register)
   self.x = 0
   self.y = 0
   self.vx = 0
@@ -15,7 +15,7 @@ function Player:initialize(world)
 
   self.world = world
 
-  self.img = love.graphics.newImage("asset/pinguin.png")
+  self.img = register:getOrLoad("asset/pinguin.png")
   self.img:setFilter("nearest","nearest")
 end
 

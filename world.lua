@@ -2,13 +2,15 @@ local class = require "lib/middleclass"
 
 local World = class("World")
 
-function World:initialize(width, height, tileSize)
+function World:initialize(width, height, tileSize, register)
   self.width = width
   self.height = height
   self.tileSize = tileSize
 
   self.cols = width / tileSize
   self.lines = height / tileSize
+
+  self.register = register
 
   -- world is a grid, tile 8x8
   self.grid = {}
@@ -28,23 +30,23 @@ function World:generateTile(x, y)
   if x == 1 then
     return self:generateFirstRow(y)
   elseif y == 1 then
-    return { type = "rock-left", img = loadImage("asset/rock-left.png") }
+    return { type = "rock-left", img = self.register:getOrLoad("asset/rock-left.png") }
   elseif y == self.cols then
-    return { type = "rock-right", img = loadImage("asset/rock-right.png") }
+    return { type = "rock-right", img = self.register:getOrLoad("asset/rock-right.png") }
   else
-    return { type = "water-still", img = loadImage("asset/water-still.png") }
+    return { type = "water-still", img = self.register:getOrLoad("asset/water-still.png") }
   end
 end
 
 function World:generateFirstRow(y)
   if y == 1 then
-    return { type = "rock-top-left", img = loadImage("asset/rock-top-left.png") }
+    return { type = "rock-top-left", img = self.register:getOrLoad("asset/rock-top-left.png") }
 
   elseif y == self.cols then
-    return { type = "rock-top-right", img = loadImage("asset/rock-top-right.png") }
+    return { type = "rock-top-right", img = self.register:getOrLoad("asset/rock-top-right.png") }
 
   else
-    return { type = "water-top", img = loadImage("asset/water-top.png") }
+    return { type = "water-top", img = self.register:getOrLoad("asset/water-top.png") }
   end
 end
 
@@ -58,13 +60,6 @@ function World:draw()
       love.graphics.draw(img, y, x)
     end
   end
-end
-
-function loadImage(path)
-  local img = love.graphics.newImage(path)
-  img:setFilter("nearest","nearest")
-
-  return img
 end
 
 return World
