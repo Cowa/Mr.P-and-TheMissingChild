@@ -12,11 +12,8 @@ function bump_debug.draw(world)
       local l,t,w,h = getCellRect(world, cx,cy)
       local intensity = cell.itemCount * 16 + 16
 
-      love.graphics.setColor(255, 255, 255, 200)
+      love.graphics.setColor(255, 255, 255, 50)
       love.graphics.rectangle("fill", l, t, w, h)
-
-      love.graphics.setColor(255, 255, 255, 200)
-      love.graphics.rectangle("line", l, t, w, h)
 
       love.graphics.setColor(255, 255, 255, 255)
     end

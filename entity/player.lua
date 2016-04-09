@@ -4,10 +4,10 @@ local Entity = require "entity/entity"
 local Player = class("Player", Entity)
 
 function Player:initialize(world, x, y)
-  Entity.initialize(self, world, x, y, 5, 2)
+  Entity.initialize(self, world, x, y, 1, 1)
   self.world = world
 
-  self.speed = 2
+  self.speed = 1
 end
 
 function Player:update(dt)
@@ -16,12 +16,15 @@ function Player:update(dt)
 end
 
 function Player:move(x, y)
-  local actualX, actualY, cols, len = self.world:move(self, x, y)
+  local actualX, actualY, cols, len = self.world:move(self, x, y, self.filter)
+
   self.x = actualX
   self.y = actualY
+end
 
-  -- handle collision
-  -- other.class.name to get class name
+function Player:filter(other)
+  local kind = other.class.name
+  if kind == 'Rock' then return 'slide' end
 end
 
 function Player:input(dt)
@@ -52,7 +55,7 @@ end
 
 function Player:draw()
   love.graphics.setColor(255, 0, 0)
-  love.graphics.points(self.x, self.y)
+  love.graphics.points(self.x, self.y + 1)
   love.graphics.setColor(255, 255, 255)
 end
 

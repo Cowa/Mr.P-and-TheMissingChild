@@ -1,14 +1,14 @@
+local _ = require "lib/moses"
+local sti = require "lib/sti"
+local gamera = require "lib/gamera"
+local class = require "lib/middleclass"
 local bump = require "lib/bump"
 local bump_debug = require "lib/bump_debug"
 
-local class = require "lib/middleclass"
-
 local Player = require "entity/player"
+local Rock = require "entity/rock"
 
 local Map = class("Map")
-local gamera = require "lib/gamera"
-
-local sti = require "lib/sti"
 
 function Map:initialize()
   self.width = 64
@@ -18,11 +18,17 @@ function Map:initialize()
   self.camera:setWindow(0, 0, self.width, self.width)
   self.camera:setPosition(0, 0)
 
+  self.world = bump.newWorld(1)
+
   self.map = sti.new("asset/map1.lua")
 
-  self.world = bump.newWorld(8)
+  local collisionEntities = self.map.layers["collision"].objects
 
-  self.player = Player:new(self.world, 16, 16)
+  _.each(collisionEntities, function (i, e)
+    Rock:new(self.world, e.x, e.y, e.width, e.height)
+  end)
+
+  self.player = Player:new(self.world, 20, 20)
 end
 
 function Map:update(dt)
@@ -32,12 +38,12 @@ function Map:update(dt)
   self.player:update(dt)
 
   self.camera:setPosition(self.player.x, self.player.y)
-
 end
 
 function Map:draw()
   self.camera:draw(function(l, t, w, h)
     self.map:draw()
+    bump_debug.draw(self.world)
     self.player:draw()
   end)
 end
