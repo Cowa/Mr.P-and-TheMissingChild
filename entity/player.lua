@@ -10,23 +10,27 @@ function Player:initialize(world, x, y)
   self.img = love.graphics.newImage("asset/player.png")
   self.img:setFilter("nearest", "nearest")
 
-  self.speed = 2
-  self.runAccel = 5
+  self.position = "right"
+
+  self.speed = 10
+  self.speedUpDown = 20
 end
 
 function Player:update(dt)
   self:input(dt)
-  self:move(self.x + self.vx, self.y + self.vy)
+
+  if self.position == "stand" then
+    self:move(self.x, self.y + 10 * dt)
+  else
+    self:move(self.x, self.y + 2 * dt)
+  end
 end
 
 function Player:move(x, y)
   local actualX, actualY, cols, len = self.world:move(self, x, y, self.filter)
 
-  self.x = round(actualX)
-  self.y = round(actualY)
-
-  -- rounded player world position to avoid unsync view/world
-  self.world:update(self, self.x, self.y)
+  self.x = actualX
+  self.y = actualY
 end
 
 function Player:filter(other)
@@ -40,23 +44,23 @@ function Player:input(dt)
     end
 
     if love.keyboard.isDown("right") then
-      self.vx = self.vx + self.speed * dt
+      self:move(self.x + self.speed * dt , self.y)
+      self.position = "right"
 
     elseif love.keyboard.isDown("left") then
-      self.vx = self.vx - self.speed * dt
+      self:move(self.x - self.speed * dt , self.y)
+      self.position = "left"
 
     else
-      self.vx = 0
+      self.position = "stand"
     end
 
     if love.keyboard.isDown("up") then
-      self.vy = self.vy - self.speed * dt
+      self:move(self.x, self.y - self.speedUpDown * dt)
 
     elseif love.keyboard.isDown("down") then
-      self.vy = self.vy + self.speed * dt
+      self:move(self.x, self.y + self.speedUpDown * dt)
 
-    else
-      self.vy = 0
     end
 end
 
