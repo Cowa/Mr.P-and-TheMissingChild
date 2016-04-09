@@ -7,6 +7,7 @@ local bump_debug = require "lib/bump_debug"
 
 local Player = require "entity/player"
 local Rock = require "entity/rock"
+local Algae = require "entity/algae"
 
 local Map = class("Map")
 
@@ -28,11 +29,19 @@ function Map:initialize()
     Rock:new(self.world, e.x, e.y, e.width, e.height)
   end)
 
+  local algaes = self.map.layers["algae"].objects
+
+  self.algaes = _.map(algaes, function (i, e)
+    print(algaes)
+    return Algae:new(self.world, e.x, e.y, e.width, e.height, e.type)
+  end)
+
   self.player = Player:new(self.world, 20, 20)
 end
 
 function Map:update(dt)
   self.map:update(dt)
+  _.each(self.algaes, function (i, e) e:update(dt) end)
 
   self.player:input(dt)
   self.player:update(dt)
@@ -45,6 +54,8 @@ function Map:draw()
     self.map:draw()
     --bump_debug.draw(self.world)
     self.player:draw()
+
+    _.each(self.algaes, function (i, e) e:draw() end)
   end)
 end
 
