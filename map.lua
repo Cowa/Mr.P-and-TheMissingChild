@@ -43,7 +43,7 @@ end
 function Map:draw()
   self.camera:draw(function(l, t, w, h)
     self.map:draw()
-    bump_debug.draw(self.world)
+    --bump_debug.draw(self.world)
     self.player:draw()
   end)
 end

@@ -4,22 +4,29 @@ local Entity = require "entity/entity"
 local Player = class("Player", Entity)
 
 function Player:initialize(world, x, y)
-  Entity.initialize(self, world, x, y, 1, 1)
+  Entity.initialize(self, world, x, y, 3, 3)
   self.world = world
 
-  self.speed = 1
+  self.img = love.graphics.newImage("asset/player.png")
+  self.img:setFilter("nearest", "nearest")
+
+  self.speed = 2
+  self.runAccel = 5
 end
 
 function Player:update(dt)
   self:input(dt)
-  self:move(self.x + self.vx * dt, self.y + self.vy * dt)
+  self:move(self.x + self.vx, self.y + self.vy)
 end
 
 function Player:move(x, y)
   local actualX, actualY, cols, len = self.world:move(self, x, y, self.filter)
 
-  self.x = actualX
-  self.y = actualY
+  self.x = round(actualX)
+  self.y = round(actualY)
+
+  -- rounded player world position to avoid unsync view/world
+  self.world:update(self, self.x, self.y)
 end
 
 function Player:filter(other)
@@ -33,20 +40,20 @@ function Player:input(dt)
     end
 
     if love.keyboard.isDown("right") then
-      self.vx = self.vx + self.speed -- player:move(player.x + self.speed * dt, player.y)
+      self.vx = self.vx + self.speed * dt
 
     elseif love.keyboard.isDown("left") then
-      self.vx = self.vx - self.speed -- player:move(player.x - self.speed * dt, player.y)
+      self.vx = self.vx - self.speed * dt
 
     else
       self.vx = 0
     end
 
     if love.keyboard.isDown("up") then
-      self.vy = self.vy - self.speed -- player:move(player.x, player.y - self.speed * dt)
+      self.vy = self.vy - self.speed * dt
 
     elseif love.keyboard.isDown("down") then
-      self.vy = self.vy + self.speed -- player:move(player.x, player.y + self.speed * dt)
+      self.vy = self.vy + self.speed * dt
 
     else
       self.vy = 0
@@ -54,9 +61,7 @@ function Player:input(dt)
 end
 
 function Player:draw()
-  love.graphics.setColor(255, 0, 0)
-  love.graphics.points(self.x, self.y + 1)
-  love.graphics.setColor(255, 255, 255)
+  love.graphics.draw(self.img, self.x, self.y)
 end
 
 return Player
