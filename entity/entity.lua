@@ -12,4 +12,9 @@ function Entity:remove()
   self.world:remove(self)
 end
 
+function Entity:filter(other)
+  local kind = other.class.name
+  if kind == 'Rock' then return 'slide' end
+end
+
 return Entity

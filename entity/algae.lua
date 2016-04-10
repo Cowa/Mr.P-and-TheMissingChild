@@ -12,8 +12,14 @@ function Algae:initialize(world, x, y, w, h, type)
   self.type = type
   self.img = cache:getOrLoad("asset/algae-" .. type .. ".png")
 
-  local g = anim8.newGrid(2, 2, self.img:getWidth(), self.img:getHeight())
-  self.animation = anim8.newAnimation(g('1-2', 1), 1)
+  if string.startsWith(type, "small") then
+    local g = anim8.newGrid(2, 2, self.img:getWidth(), self.img:getHeight())
+    self.animation = anim8.newAnimation(g('1-2', 1), 1)
+  elseif string.startsWith(type, "medium") then
+    local g = anim8.newGrid(3, 3, self.img:getWidth(), self.img:getHeight())
+    self.animation = anim8.newAnimation(g('1-4', 1), 1)
+  end
+
 end
 
 function Algae:update(dt)

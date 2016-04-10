@@ -35,3 +35,7 @@ end
 function round(n)
   return n % 1 >= 0.5 and math.ceil(n) or math.floor(n)
 end
+
+function string.startsWith(String,Start)
+   return string.sub(String,1,string.len(Start))==Start
+end
