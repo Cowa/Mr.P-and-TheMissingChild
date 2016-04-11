@@ -1,3 +1,4 @@
+local _ = require "lib/moses"
 local class = require "lib/middleclass"
 
 local Entity = require "entity/entity"
@@ -14,6 +15,8 @@ function Player:initialize(world, x, y)
 
   self.speed = 10
   self.speedUpDown = 20
+
+  self.score = 0
 end
 
 function Player:update(dt)
@@ -31,11 +34,22 @@ function Player:move(x, y)
 
   self.x = actualX
   self.y = actualY
+
+  _.map(cols, function (i, o)
+    if o.other.class.name == "Coin" then
+      o.other:picked()
+      self.score = self.score + o.other.value
+    end
+  end)
 end
 
 function Player:filter(other)
   local kind = other.class.name
-  if kind == 'Rock' then return 'slide' end
+  if kind == "Rock" then
+    return "slide"
+  elseif kind == "Coin" then
+    return "cross"
+  end
 end
 
 function Player:input(dt)

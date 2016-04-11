@@ -35,7 +35,6 @@ function Fish:update(dt)
 end
 
 function Fish:draw()
-  --love.graphics.draw(self.img, self.x, self.y)
   self.animation:draw(self.img, self.x, self.y)
 end
 

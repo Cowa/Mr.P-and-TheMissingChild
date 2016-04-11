@@ -9,6 +9,7 @@ local Player = require "entity/player"
 local Rock = require "entity/rock"
 local Algae = require "entity/algae"
 local Fish = require "entity/fish"
+local Coin = require "entity/coin"
 
 local Map = class("Map")
 
@@ -42,6 +43,12 @@ function Map:initialize()
     return Fish:new(self.world, e.x, e.y, e.width, e.height, e.type)
   end)
 
+  local coins = self.map.layers["coin"].objects
+
+  self.coins = _.map(coins, function (i, e)
+    return Coin:new(self.world, e.x, e.y, e.width, e.height)
+  end)
+
   self.player = Player:new(self.world, 15, 20)
 end
 
@@ -64,6 +71,7 @@ function Map:draw()
 
     _.each(self.algaes, function (i, e) e:draw() end)
     _.each(self.fishes, function (i, e) e:draw() end)
+    _.each(self.coins, function (i, e) e:draw() end)
   end)
 end
 

@@ -1,5 +1,6 @@
 local cache = {}
 cache.assets = {}
+cache.sounds = {}
 
 -- Allow to only load an asset once
 function cache:getOrLoad(path)
@@ -12,6 +13,17 @@ function cache:getOrLoad(path)
     cache.assets[path] = asset
 
     return asset
+  end
+end
+
+function cache:getOrLoadSound(path)
+  if cache.sounds[path] then
+    return cache.sounds[path]
+  else
+    local sound = love.audio.newSource(path)
+    cache.sounds[path] = sound
+
+    return sound
   end
 end
 

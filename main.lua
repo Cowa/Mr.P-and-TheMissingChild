@@ -16,7 +16,7 @@ end
 function love.update(dt)
   map:update(dt)
 
-  love.window.setTitle("FPS: " .. love.timer.getFPS())
+  love.window.setTitle("Score: " .. map.player.score .. " | FPS: " .. love.timer.getFPS())
 end
 
 function love.draw()

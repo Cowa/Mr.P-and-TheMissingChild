@@ -8,9 +8,43 @@ return {
   height = 25,
   tilewidth = 8,
   tileheight = 8,
-  nextobjectid = 42,
+  nextobjectid = 68,
   properties = {},
-  tilesets = {},
+  tilesets = {
+    {
+      name = "fish-orange",
+      firstgid = 1,
+      tilewidth = 4,
+      tileheight = 2,
+      spacing = 0,
+      margin = 0,
+      image = "fish-orange.png",
+      imagewidth = 8,
+      imageheight = 2,
+      tileoffset = {
+        x = 0,
+        y = 0
+      },
+      properties = {},
+      terrains = {},
+      tilecount = 2,
+      tiles = {
+        {
+          id = 0,
+          animation = {
+            {
+              tileid = "0",
+              duration = "500"
+            },
+            {
+              tileid = "1",
+              duration = "500"
+            }
+          }
+        }
+      }
+    }
+  },
   layers = {
     {
       type = "imagelayer",
@@ -169,7 +203,7 @@ return {
           x = 9,
           y = 72,
           width = 19,
-          height = 10,
+          height = 9,
           rotation = 0,
           visible = true,
           properties = {}
@@ -313,6 +347,84 @@ return {
           y = 27,
           width = 1,
           height = 6,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 58,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 43,
+          y = 73,
+          width = 1,
+          height = 8,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 60,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 32,
+          y = 75,
+          width = 1,
+          height = 6,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 62,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 9,
+          y = 81,
+          width = 8,
+          height = 1,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 64,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 21,
+          y = 81,
+          width = 10,
+          height = 1,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 65,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 51,
+          y = 37,
+          width = 5,
+          height = 1,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 67,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 54,
+          y = 38,
+          width = 2,
+          height = 1,
           rotation = 0,
           visible = true,
           properties = {}
@@ -465,6 +577,82 @@ return {
           y = 43,
           width = 4,
           height = 2,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      name = "coin",
+      visible = false,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      properties = {},
+      objects = {
+        {
+          id = 53,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 38,
+          y = 45,
+          width = 2,
+          height = 1,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 54,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 53,
+          y = 71,
+          width = 2,
+          height = 1,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 55,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 49,
+          y = 27,
+          width = 2,
+          height = 1,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 56,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 13,
+          y = 25,
+          width = 2,
+          height = 1,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 57,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 15,
+          y = 71,
+          width = 2,
+          height = 1,
           rotation = 0,
           visible = true,
           properties = {}
