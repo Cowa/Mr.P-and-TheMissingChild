@@ -15,7 +15,7 @@ local Map = class("Map")
 
 function Map:initialize()
   self.width = 64
-  self.height = 200
+  self.height = 122
 
   self.camera = gamera.new(0, 0, self.width, self.height)
   self.camera:setWindow(0, 0, self.width, self.width)
@@ -49,7 +49,7 @@ function Map:initialize()
     return Coin:new(self.world, e.x, e.y, e.width, e.height)
   end)
 
-  self.player = Player:new(self.world, 15, 20)
+  self.player = Player:new(self.world, 11, 10)
 end
 
 function Map:update(dt)

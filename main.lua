@@ -23,8 +23,6 @@ end
 function love.draw()
   maid64.start()
 
-  love.graphics.clear(0, 0, 0)
-
   map:draw()
 
   maid64.finish()

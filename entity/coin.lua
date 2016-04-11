@@ -11,8 +11,9 @@ function Coin:initialize(world, x, y, w, h)
   self.value = 10
 
   self.sound = cache:getOrLoadSound("asset/sound/coin.wav")
-  self.effectImg = cache:getOrLoadImage("asset/particle/coin-picked.png")
-  self.particle = love.graphics.newParticleSystem(self.effectImg, 10)
+
+  local particleImg = cache:getOrLoadImage("asset/particle/coin-picked.png")
+  self.particle = love.graphics.newParticleSystem(particleImg, 10)
 end
 
 function Coin:setUpParticle()
