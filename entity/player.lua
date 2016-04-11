@@ -1,4 +1,5 @@
 local _ = require "lib/moses"
+local anim8 = require "lib/anim8"
 local class = require "lib/middleclass"
 
 local Entity = require "entity/entity"
@@ -11,6 +12,9 @@ function Player:initialize(world, x, y)
   self.img = love.graphics.newImage("asset/player.png")
   self.img:setFilter("nearest", "nearest")
 
+  local g = anim8.newGrid(4, 3, self.img:getWidth(), self.img:getHeight())
+  self.animation = anim8.newAnimation(g('1-1', 1), 1)
+
   self.position = "right"
 
   self.speed = 10
@@ -21,6 +25,7 @@ end
 
 function Player:update(dt)
   self:input(dt)
+  self.animation:update(dt)
 
   if self.position == "stand" then
     self:move(self.x, self.y + 10 * dt)
@@ -64,9 +69,6 @@ function Player:input(dt)
     elseif love.keyboard.isDown("left") then
       self:move(self.x - self.speed * dt , self.y)
       self.position = "left"
-
-    else
-      self.position = "stand"
     end
 
     if love.keyboard.isDown("up") then
@@ -79,7 +81,15 @@ function Player:input(dt)
 end
 
 function Player:draw()
-  love.graphics.draw(self.img, self.x, self.y)
+  if self.position == "right" then
+    self.animation:draw(self.img, self.x, self.y)
+  elseif self.position == "left" then
+    self.animation:flipH()
+    self.animation:draw(self.img, self.x, self.y)
+    self.animation:flipH()
+  else
+    self.animation:draw(self.img, self.x, self.y)
+  end
 end
 
 return Player
