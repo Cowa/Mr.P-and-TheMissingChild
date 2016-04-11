@@ -10,7 +10,7 @@ function Algae:initialize(world, x, y, w, h, type)
   Entity.initialize(self, world, x, y, w, h)
 
   self.type = type
-  self.img = cache:getOrLoad("asset/algae-" .. type .. ".png")
+  self.img = cache:getOrLoadImage("asset/algae-" .. type .. ".png")
 
   if string.startsWith(type, "small") then
     local g = anim8.newGrid(2, 2, self.img:getWidth(), self.img:getHeight())

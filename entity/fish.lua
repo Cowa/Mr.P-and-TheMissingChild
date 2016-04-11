@@ -10,7 +10,7 @@ function Fish:initialize(world, x, y, w, h, type)
   Entity.initialize(self, world, x, y, w, h)
 
   self.type = type
-  self.img = cache:getOrLoad("asset/fish-" .. type .. ".png")
+  self.img = cache:getOrLoadImage("asset/fish-" .. type .. ".png")
   self.state = "right"
   self.speed = 10
 

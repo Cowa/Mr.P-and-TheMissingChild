@@ -56,6 +56,7 @@ function Map:update(dt)
   self.map:update(dt)
   _.each(self.algaes, function (i, e) e:update(dt) end)
   _.each(self.fishes, function (i, e) e:update(dt) end)
+  _.each(self.coins, function (i, e) e:update(dt) end)
 
   self.player:input(dt)
   self.player:update(dt)

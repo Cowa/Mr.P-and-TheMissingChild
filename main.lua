@@ -5,6 +5,7 @@ local Map = require "map"
 local cache = require "cache"
 
 function love.load()
+  math.randomseed(os.time())
   local screenSize = 64
 
   maid64.setup(screenSize)

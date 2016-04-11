@@ -3,7 +3,7 @@ cache.assets = {}
 cache.sounds = {}
 
 -- Allow to only load an asset once
-function cache:getOrLoad(path)
+function cache:getOrLoadImage(path)
   if cache.assets[path] then
     return cache.assets[path]
   else
