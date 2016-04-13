@@ -27,16 +27,14 @@ function Player:initialize(world, x, y)
   self.bubbleParticle:setLinearAcceleration(-1, -10, 1, -20)
   self.bubbleParticle:setColors(255, 255, 255, 255, 255, 255, 255, 100)
 
-  self.position = "right"
+  self.position = "stand"
 
   self.speed = 20
   self.speedDown = 15
-
-  self.jumpVelocity = 75
+  self.jumpVelocity = 30
+  self.gravity = 500
 
   self.score = 0
-
-  self.gravity = 300
 end
 
 function Player:update(dt)
@@ -93,7 +91,7 @@ function Player:changeVelocityByInput(dt)
       self.position = "stand"
     end
 
-    if love.keyboard.isDown("space") then
+    if love.keyboard.isDown("up") then
       self.vy = -self.jumpVelocity
 
     elseif love.keyboard.isDown("down") then
