@@ -11,14 +11,17 @@ function Player:initialize(world, x, y)
   Entity.initialize(self, world, x, y, 5, 5)
 
   self.img = cache:getOrLoadImage("asset/player.png")
-
   self.walkingImg = cache:getOrLoadImage("asset/player-walking.png")
+  self.swimmingImg = cache:getOrLoadImage("asset/player-swimming.png")
 
   local g = anim8.newGrid(5, 5, self.img:getWidth(), self.img:getHeight())
   self.animation = anim8.newAnimation(g('1-1', 1), 1)
 
-  local g1 = anim8.newGrid(6, 5, self.walkingImg:getWidth(), self.walkingImg:getHeight())
-  self.walkingAnimation = anim8.newAnimation(g1('1-2', 1), 0.5)
+  g = anim8.newGrid(6, 5, self.walkingImg:getWidth(), self.walkingImg:getHeight())
+  self.walkingAnimation = anim8.newAnimation(g('1-2', 1), 0.5)
+
+  g = anim8.newGrid(7, 5, self.swimmingImg:getWidth(), self.swimmingImg:getHeight())
+  self.swimmingAnimation = anim8.newAnimation(g('1-2', 1), 0.5)
 
   local bubbleParticleImg = cache:getOrLoadImage("asset/particle/player-bubble.png")
   self.bubbleParticle = love.graphics.newParticleSystem(bubbleParticleImg, 10)
@@ -44,6 +47,7 @@ function Player:update(dt)
 
   self.animation:update(dt)
   self.walkingAnimation:update(dt)
+  self.swimmingAnimation:update(dt)
   self.bubbleParticle:update(dt)
 end
 
@@ -93,9 +97,11 @@ function Player:changeVelocityByInput(dt)
 
     if love.keyboard.isDown("up") then
       self.vy = -self.jumpVelocity
+      self.position = "swim"
 
     elseif love.keyboard.isDown("down") then
       self.vy = self.speedDown
+      self.position = "swim"
 
     else
       self.vy = 0
@@ -110,6 +116,8 @@ function Player:draw()
     self.walkingAnimation:flipH()
     self.walkingAnimation:draw(self.walkingImg, self.x - 1, self.y)
     self.walkingAnimation:flipH()
+  elseif self.position == "swim" then
+    self.swimmingAnimation:draw(self.swimmingImg, self.x - 1, self.y)
   else
     self.animation:draw(self.img, self.x, self.y)
   end
