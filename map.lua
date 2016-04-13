@@ -58,7 +58,6 @@ function Map:update(dt)
   _.each(self.fishes, function (i, e) e:update(dt) end)
   _.each(self.coins, function (i, e) e:update(dt) end)
 
-  self.player:input(dt)
   self.player:update(dt)
 
   self.camera:setPosition(self.player.x, self.player.y)

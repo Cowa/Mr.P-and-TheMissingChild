@@ -10,11 +10,9 @@ local cache = require "cache"
 function Player:initialize(world, x, y)
   Entity.initialize(self, world, x, y, 5, 5)
 
-  self.img = love.graphics.newImage("asset/player.png")
-  self.img:setFilter("nearest", "nearest")
+  self.img = cache:getOrLoadImage("asset/player.png")
 
-  self.walkingImg = love.graphics.newImage("asset/player-walking.png")
-  self.walkingImg:setFilter("nearest", "nearest")
+  self.walkingImg = cache:getOrLoadImage("asset/player-walking.png")
 
   local g = anim8.newGrid(5, 5, self.img:getWidth(), self.img:getHeight())
   self.animation = anim8.newAnimation(g('1-1', 1), 1)
@@ -27,31 +25,35 @@ function Player:initialize(world, x, y)
   self.bubbleParticle:setParticleLifetime(1)
   self.bubbleParticle:setEmissionRate(1)
   self.bubbleParticle:setLinearAcceleration(-1, -10, 1, -20)
-  self.bubbleParticle:setColors(255, 255, 255, 255, 255, 255, 255, 0)
+  self.bubbleParticle:setColors(255, 255, 255, 255, 255, 255, 255, 100)
 
   self.position = "right"
 
-  self.speed = 10
-  self.speedUpDown = 20
+  self.speed = 20
+  self.speedDown = 15
+
+  self.jumpVelocity = 75
 
   self.score = 0
+
+  self.gravity = 300
 end
 
 function Player:update(dt)
-  self:input(dt)
+  self:changeVelocityByInput(dt)
+  self:changeVelocityByGravity(dt)
+  self:move(dt)
+
   self.animation:update(dt)
   self.walkingAnimation:update(dt)
   self.bubbleParticle:update(dt)
-
-  if self.position == "stand" then
-    self:move(self.x, self.y + 10 * dt)
-  else
-    self:move(self.x, self.y + 2 * dt)
-  end
 end
 
-function Player:move(x, y)
-  local actualX, actualY, cols, len = self.world:move(self, x, y, self.filter)
+function Player:move(dt)
+  local futureX = self.x + self.vx * dt
+  local futureY = self.y + self.vy * dt
+
+  local actualX, actualY, cols, len = self.world:move(self, futureX, futureY, self.filter)
 
   self.x = actualX
   self.y = actualY
@@ -73,34 +75,37 @@ function Player:filter(other)
   end
 end
 
-function Player:input(dt)
-    if love.keyboard.isDown("escape") then
-      love.event.quit()
-    end
+function Player:changeVelocityByGravity(dt)
+  self.vy = self.vy + self.gravity * dt
+end
 
+function Player:changeVelocityByInput(dt)
     if love.keyboard.isDown("right") then
-      self:move(self.x + self.speed * dt , self.y)
+      self.vx = self.speed
       self.position = "right"
 
     elseif love.keyboard.isDown("left") then
-      self:move(self.x - self.speed * dt , self.y)
+      self.vx = -self.speed
       self.position = "left"
 
     else
+      self.vx = 0
       self.position = "stand"
     end
 
-    if love.keyboard.isDown("up") then
-      self:move(self.x, self.y - self.speedUpDown * dt)
+    if love.keyboard.isDown("space") then
+      self.vy = -self.jumpVelocity
 
     elseif love.keyboard.isDown("down") then
-      self:move(self.x, self.y + self.speedUpDown * dt)
+      self.vy = self.speedDown
 
+    else
+      self.vy = 0
     end
 end
 
 function Player:draw()
-  love.graphics.draw(self.bubbleParticle, self.x + 2, self.y + 2)
+  love.graphics.draw(self.bubbleParticle, self.x + 3, self.y + 1)
   if self.position == "right" then
     self.walkingAnimation:draw(self.walkingImg, self.x, self.y)
   elseif self.position == "left" then
