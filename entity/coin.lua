@@ -29,7 +29,7 @@ function Coin:update(dt)
 end
 
 function Coin:draw()
-  love.graphics.draw(self.particle, self.x + 1, self.y)
+  love.graphics.draw(self.particle, self.x + 1, self.y + 1)
 
   if self.removed then return end
 
