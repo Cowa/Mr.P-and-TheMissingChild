@@ -1,11 +1,12 @@
 local _ = require "lib/moses"
 local anim8 = require "lib/anim8"
 local class = require "lib/middleclass"
+local cache = require "cache"
 
 local Entity = require "entity/entity"
-local Player = class("Player", Entity)
+local Bubble = require "entity/bubble"
 
-local cache = require "cache"
+local Player = class("Player", Entity)
 
 function Player:initialize(world, x, y)
   Entity.initialize(self, world, x, y, 5, 5)
@@ -21,12 +22,7 @@ function Player:initialize(world, x, y)
   g = anim8.newGrid(7, 5, self.img:getWidth(), self.img:getHeight(), 0, 10)
   self.swimmingAnimation = anim8.newAnimation(g('1-2', 1), 0.5)
 
-  local bubbleParticleImg = cache:getOrLoadImage("asset/particle/player-bubble.png")
-  self.bubbleParticle = love.graphics.newParticleSystem(bubbleParticleImg, 10)
-  self.bubbleParticle:setParticleLifetime(1)
-  self.bubbleParticle:setEmissionRate(1)
-  self.bubbleParticle:setLinearAcceleration(-1, -10, 1, -20)
-  self.bubbleParticle:setColors(255, 255, 255, 255, 255, 255, 255, 100)
+  self.bubbleParticle = Bubble:new()
 
   self.position = "stand"
 
@@ -119,13 +115,14 @@ function Player:changeVelocityByInput(dt)
       self.vy = 0
     end
 
+    -- If we have the baby, set the same position state
     if self.baby then
       self.baby.position = self.position
     end
 end
 
 function Player:draw()
-  love.graphics.draw(self.bubbleParticle, self.x + 3, self.y + 1)
+  self.bubbleParticle:draw(self.x + 3, self.y + 1)
 
   if self.position == "right" then
     self.walkingAnimation:draw(self.img, self.x, self.y)

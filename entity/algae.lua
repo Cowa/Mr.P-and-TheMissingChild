@@ -1,10 +1,9 @@
 local anim8 = require "lib/anim8"
 local class = require "lib/middleclass"
+local cache = require "cache"
 
 local Entity = require "entity/entity"
 local Algae = class("Algae", Entity)
-
-local cache = require "cache"
 
 function Algae:initialize(world, x, y, w, h, type)
   Entity.initialize(self, world, x, y, w, h)

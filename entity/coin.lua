@@ -1,9 +1,8 @@
 local class = require "lib/middleclass"
+local cache = require "cache"
 
 local Entity = require "entity/entity"
 local Coin = class("Coin", Entity)
-
-local cache = require "cache"
 
 function Coin:initialize(world, x, y, w, h)
   Entity.initialize(self, world, x, y, w, h)
