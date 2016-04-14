@@ -10,6 +10,7 @@ local Rock = require "entity/rock"
 local Algae = require "entity/algae"
 local Fish = require "entity/fish"
 local Coin = require "entity/coin"
+local Baby = require "entity/baby"
 
 local Map = class("Map")
 
@@ -49,7 +50,10 @@ function Map:initialize()
     return Coin:new(self.world, e.x, e.y, e.width, e.height)
   end)
 
+  local baby = self.map.layers["baby"].objects[1]
+
   self.player = Player:new(self.world, 11, 10)
+  self.baby = Baby:new(self.world, baby.x, baby.y)
 end
 
 function Map:update(dt)
@@ -59,6 +63,7 @@ function Map:update(dt)
   _.each(self.coins, function (i, e) e:update(dt) end)
 
   self.player:update(dt)
+  self.baby:update(dt)
 
   self.camera:setPosition(self.player.x, self.player.y)
 end
@@ -68,6 +73,7 @@ function Map:draw()
     self.map:draw()
     --bump_debug.draw(self.world)
     self.player:draw()
+    self.baby:draw()
 
     _.each(self.algaes, function (i, e) e:draw() end)
     _.each(self.fishes, function (i, e) e:draw() end)

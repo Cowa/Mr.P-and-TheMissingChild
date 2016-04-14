@@ -38,6 +38,9 @@ function Player:initialize(world, x, y)
   self.gravity = 500
 
   self.score = 0
+
+  self.isBabyAttached = false
+  self.baby = nil
 end
 
 function Player:update(dt)
@@ -60,10 +63,19 @@ function Player:move(dt)
   self.x = actualX
   self.y = actualY
 
+  -- If we have the baby, we move it too
+  if self.baby then
+    self.baby.x = self.x - 2
+    self.baby.y = self.y + 2
+  end
+
   _.map(cols, function (i, o)
     if o.other.class.name == "Coin" then
       o.other:picked()
       self.score = self.score + o.other.value
+
+    elseif o.other.class.name == "Baby" then
+      self.baby = o.other
     end
   end)
 end
@@ -73,6 +85,8 @@ function Player:filter(other)
   if kind == "Rock" then
     return "slide"
   elseif kind == "Coin" then
+    return "cross"
+  elseif kind == "Baby" then
     return "cross"
   end
 end
@@ -105,6 +119,10 @@ function Player:changeVelocityByInput(dt)
 
     else
       self.vy = 0
+    end
+
+    if self.baby then
+      self.baby.position = self.position
     end
 end
 
