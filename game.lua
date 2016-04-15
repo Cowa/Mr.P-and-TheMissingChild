@@ -90,7 +90,7 @@ function Game:update(dt)
     self.hideGameWhenExit:update(dt)
 
     if musicShut then
-      switchMenu()
+      switchEnd()
     end
   else
     self.playMusicTween:update(dt)

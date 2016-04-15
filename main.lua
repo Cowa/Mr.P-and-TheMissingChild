@@ -3,6 +3,7 @@ require "lib/maid64"
 
 local Game = require "game"
 local Menu = require "menu"
+local End = require "end"
 local State = require "state"
 local cache = require "cache"
 
@@ -25,6 +26,11 @@ end
 function switchGame()
   local game = Game:new()
   state:set(game)
+end
+
+function switchEnd()
+  local ending = End:new()
+  state:set(ending)
 end
 
 function love.update(dt)

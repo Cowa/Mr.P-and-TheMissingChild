@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="8" height="8" tilewidth="8" tileheight="8" nextobjectid="15">
+ <imagelayer name="bg">
+  <image source="end.png" width="64" height="64"/>
+ </imagelayer>
+ <objectgroup name="player" visible="0">
+  <object id="1" x="5" y="30" width="5" height="5"/>
+ </objectgroup>
+ <objectgroup name="baby" visible="0">
+  <object id="2" x="3" y="32" width="3" height="3"/>
+ </objectgroup>
+ <objectgroup name="algae" visible="0">
+  <object id="4" type="small-top" x="57" y="46" width="2" height="2"/>
+ </objectgroup>
+ <objectgroup name="collision" visible="0">
+  <object id="5" x="0.375" y="35.375" width="12.375" height="2.25"/>
+  <object id="6" x="13.125" y="36.25" width="5.625" height="1.75"/>
+  <object id="7" x="19.375" y="37.375" width="11.25" height="2"/>
+  <object id="8" x="31.375" y="38.25" width="10.125" height="1.75"/>
+  <object id="9" x="41.875" y="40.375" width="2.875" height="1.25"/>
+  <object id="10" x="44.875" y="42" width="4.875" height="2.5"/>
+  <object id="11" x="50.25" y="43.75" width="2.375" height="2.75"/>
+  <object id="12" x="52.875" y="46.875" width="3.125" height="2.625"/>
+  <object id="13" x="56" y="50" width="6.75" height="3.5"/>
+ </objectgroup>
+</map>
