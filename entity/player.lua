@@ -31,9 +31,10 @@ function Player:initialize(world, x, y)
   self.jumpVelocity = 28
   self.gravity = 500
 
+  self.exit = false
+
   self.score = 0
 
-  self.isBabyAttached = false
   self.baby = nil
 end
 
@@ -70,6 +71,9 @@ function Player:move(dt)
 
     elseif o.other.class.name == "Baby" then
       self.baby = o.other
+
+    elseif o.other.class.name == "Exit" then
+      self.exit = true
     end
   end)
 end
@@ -81,6 +85,8 @@ function Player:filter(other)
   elseif kind == "Coin" then
     return "cross"
   elseif kind == "Baby" then
+    return "cross"
+  elseif kind == "Exit" and self.baby then
     return "cross"
   end
 end

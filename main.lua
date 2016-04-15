@@ -14,21 +14,23 @@ function love.load()
 
   state = State:new()
 
-  menu = Menu:new()
+  switchMenu()
+end
 
+function switchMenu()
+  local menu = Menu:new()
   state:set(menu)
+end
 
-  game = Game:new()
+function switchGame()
+  local game = Game:new()
+  state:set(game)
 end
 
 function love.update(dt)
-  if love.keyboard.isDown("escape") then
-    love.event.quit()
-  end
-
   state:update(dt)
 
-  love.window.setTitle("FPS: " .. love.timer.getFPS())
+  love.window.setTitle("Mr. P and the missing child | FPS: " .. love.timer.getFPS())
 end
 
 function love.draw()

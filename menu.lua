@@ -5,6 +5,7 @@ local _ = require "lib/moses"
 local bump = require "lib/bump"
 local tween = require "lib/tween"
 
+local Game = require "game"
 local Algae = require "entity/algae"
 local DummyBaby = require "entity/dummy-baby"
 local DummyPlayer = require "entity/dummy-player"
@@ -18,12 +19,14 @@ function Menu:initialize()
 
   self.volume = { volume = 0.0 }
 
+  self.flipPlayer = false
+
   self.music = cache:getOrLoadSound("asset/music/menu.mp3")
   self.music:setLooping(true)
 
   self.title = {
-    displayed = false, opacity = 0,
-    pressEnterDisplayed = false, opacityPressEnter = 0,
+    opacity = 0,
+    opacityPressEnter = 0,
     pressedEnter = false
   }
 
@@ -68,16 +71,19 @@ function Menu:update(dt)
   self.player:update(dt)
   local isBabyLost = self.moveBabyTween:update(dt)
 
+  if love.keyboard.isDown("escape") then
+    love.event.quit()
+  end
+
   if isBabyLost then
+    self.flipPlayer = true
     self.musicTween:update(dt)
     self.music:setVolume(self.volume.volume)
 
     self.music:play()
-    self.title.displayed = true
     local titleDisplayed = self.showTitleTween:update(dt)
 
     if titleDisplayed then
-      self.title.pressEnterDisplayed = true
       self.showPressEnterTween:update(dt)
     end
   end
@@ -90,7 +96,7 @@ function Menu:update(dt)
     self.hideTitleTween:update(dt)
 
     if musicMute then
-      state:set(game)
+      switchGame()
     end
   end
 
@@ -102,7 +108,7 @@ end
 function Menu:draw()
   self.map:draw()
   _.each(self.algaes, function (i, e) e:draw() end)
-  self.player:draw(self.title.displayed)
+  self.player:draw(self.flipPlayer)
   self.baby:draw()
 
   love.graphics.setColor(255, 255, 255, self.title.opacity)
