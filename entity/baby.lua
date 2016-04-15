@@ -10,6 +10,8 @@ local Baby = class("Baby", Entity)
 function Baby:initialize(world, x, y)
   Entity.initialize(self, world, x, y, 3, 3)
 
+  self.isBubbling = isBubbling or true
+
   self.type = type
   self.img = cache:getOrLoadImage("asset/baby.png")
 

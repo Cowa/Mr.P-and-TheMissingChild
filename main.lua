@@ -1,7 +1,7 @@
 require "util"
 require "lib/maid64"
 
-local Map = require "map"
+local Game = require "game"
 local Menu = require "menu"
 local State = require "state"
 local cache = require "cache"
@@ -18,21 +18,12 @@ function love.load()
 
   state:set(menu)
 
-  map = Map:new()
+  game = Game:new()
 end
 
 function love.update(dt)
-  -- handy restart
-  if love.keyboard.isDown("r") then
-    map = Map:new()
-  end
-
   if love.keyboard.isDown("escape") then
     love.event.quit()
-  end
-
-  if love.keyboard.isDown("n") then
-    state:set(map)
   end
 
   state:update(dt)
