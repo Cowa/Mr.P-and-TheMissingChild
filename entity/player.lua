@@ -28,7 +28,7 @@ function Player:initialize(world, x, y)
 
   self.speed = 20
   self.speedDown = 15
-  self.jumpVelocity = 30
+  self.jumpVelocity = 28
   self.gravity = 500
 
   self.score = 0

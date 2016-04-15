@@ -2,14 +2,21 @@ require "util"
 require "lib/maid64"
 
 local Map = require "map"
+local Menu = require "menu"
+local State = require "state"
 local cache = require "cache"
 
 function love.load()
   math.randomseed(os.time())
-  local screenSize = 64
 
-  maid64.setup(screenSize)
+  maid64.setup(64)
   love.keyboard.setKeyRepeat(true)
+
+  state = State:new()
+
+  menu = Menu:new()
+
+  state:set(menu)
 
   map = Map:new()
 end
@@ -24,15 +31,19 @@ function love.update(dt)
     love.event.quit()
   end
 
-  map:update(dt)
+  if love.keyboard.isDown("n") then
+    state:set(map)
+  end
 
-  love.window.setTitle("Score: " .. map.player.score .. " | FPS: " .. love.timer.getFPS())
+  state:update(dt)
+
+  love.window.setTitle("FPS: " .. love.timer.getFPS())
 end
 
 function love.draw()
   maid64.start()
 
-  map:draw()
+  state:draw()
 
   maid64.finish()
 end
